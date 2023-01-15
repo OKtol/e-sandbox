@@ -63,6 +63,16 @@ namespace Power.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] FragShader {
+            get {
+                object obj = ResourceManager.GetObject("FragShader", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] VertShader {
             get {
                 object obj = ResourceManager.GetObject("VertShader", resourceCulture);
