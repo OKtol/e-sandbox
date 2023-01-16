@@ -22,7 +22,7 @@ namespace Power.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Power.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Power.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Power.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,22 +61,32 @@ namespace Power.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to #version 330 core
+        ///out vec4 FragColor;
+        ///
+        ///void main()
+        ///{
+        ///    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        ///}.
         /// </summary>
-        internal static byte[] FragShader {
+        public static string FragmentShader {
             get {
-                object obj = ResourceManager.GetObject("FragShader", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("FragmentShader", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to #version 330 core
+        ///layout (location = 0) in vec3 aPosition;
+        ///
+        ///void main()
+        ///{
+        ///    gl_Position = vec4(aPosition, 1.0);
+        ///}.
         /// </summary>
-        internal static byte[] VertShader {
+        public static string VertexShader {
             get {
-                object obj = ResourceManager.GetObject("VertShader", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("VertexShader", resourceCulture);
             }
         }
     }

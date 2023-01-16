@@ -1,11 +1,23 @@
-﻿namespace Power
+﻿using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
+
+namespace Power
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            using var game = new Game(800, 600, "kek");
-            game.Run();
+            var nativeWindowSettings = new NativeWindowSettings()
+            {
+                Size = new Vector2i(800, 600),
+                Title = "Pipec",
+                // This is needed to run on macos
+                Flags = ContextFlags.ForwardCompatible,
+            };
+
+            using var window = new Window(GameWindowSettings.Default, nativeWindowSettings);
+            window.Run();
         }
     }
 }
