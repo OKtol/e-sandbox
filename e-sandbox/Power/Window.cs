@@ -1,24 +1,27 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using System.Diagnostics;
 using System.Resources;
 
 namespace Power
 {
     internal class Window : GameWindow
     {
+        private readonly float[] _vertices =
+        {
+            -0.5f, -0.5f, 0.0f, // Bottom-left vertex
+             0.5f, -0.5f, 0.0f, // Bottom-right vertex
+             0.0f,  0.5f, 0.0f  // Top vertex
+        };
+
         private int _vertexBufferObject;
 
         private int _vertexArrayObject;
 
         private Shader _shader;
 
-        private readonly float[] _vertices = {
-            0.5f,  0.5f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-            -0.5f, -0.5f, 0.0f,  // bottom left
-            -0.5f,  0.5f, 0.0f   // top left
-        };
+        private Stopwatch _timer;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -42,8 +45,14 @@ namespace Power
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
+            GL.GetInteger(GetPName.MaxVertexAttribs, out int maxAttributeCount);
+            Debug.WriteLine($"Maximum number of vertex attributes supported: {maxAttributeCount}");
+
             _shader = new Shader(Properties.Resources.VertexShader, Properties.Resources.FragmentShader);
             _shader.Use();
+
+            _timer = new Stopwatch();
+            _timer.Start();
         }
 
         protected override void OnUnload()
@@ -66,6 +75,10 @@ namespace Power
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             _shader.Use();
+
+            float greenValue = (float)Math.Sin(_timer.Elapsed.TotalSeconds) / 2.0f + 0.5f;
+            _shader.SetVector4("ourColor", new(0.0f, greenValue, 0.0f, 1.0f));
+
             GL.BindVertexArray(_vertexArrayObject);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
 
