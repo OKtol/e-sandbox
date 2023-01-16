@@ -39,8 +39,8 @@ namespace Power
         private static void CompileShader(int shader)
         {
             GL.CompileShader(shader);
-            GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
-            if (code != (int)All.True)
+            GL.GetShader(shader, ShaderParameter.CompileStatus, out var status);
+            if (status == 0)
             {
                 var infoLog = GL.GetShaderInfoLog(shader);
                 throw new Exception($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
@@ -50,8 +50,8 @@ namespace Power
         private static void LinkProgram(int program)
         {
             GL.LinkProgram(program);
-            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
-            if (code != (int)All.True)
+            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var status);
+            if (status == 0)
             {
                 var infoLog = GL.GetProgramInfoLog(program);
                 throw new Exception($"Error occurred whilst linking Program({program}). \n\n{infoLog}");
@@ -87,7 +87,8 @@ namespace Power
         public void SetInt(string name, int data)
         {
             GL.UseProgram(Handle);
-            GL.Uniform1(_uniformLocations[name], data);
+            if (_uniformLocations.ContainsKey(name))
+                GL.Uniform1(_uniformLocations[name], data);
         }
 
         /// <summary>
@@ -98,7 +99,8 @@ namespace Power
         public void SetFloat(string name, float data)
         {
             GL.UseProgram(Handle);
-            GL.Uniform1(_uniformLocations[name], data);
+            if (_uniformLocations.ContainsKey(name))
+                GL.Uniform1(_uniformLocations[name], data);
         }
 
         /// <summary>
@@ -114,7 +116,8 @@ namespace Power
         public void SetMatrix4(string name, Matrix4 data)
         {
             GL.UseProgram(Handle);
-            GL.UniformMatrix4(_uniformLocations[name], true, ref data);
+            if (_uniformLocations.ContainsKey(name))
+                GL.UniformMatrix4(_uniformLocations[name], true, ref data);
         }
 
         /// <summary>
@@ -125,7 +128,8 @@ namespace Power
         public void SetVector3(string name, Vector3 data)
         {
             GL.UseProgram(Handle);
-            GL.Uniform3(_uniformLocations[name], data);
+            if (_uniformLocations.ContainsKey(name))
+                GL.Uniform3(_uniformLocations[name], data);
         }
 
         /// <summary>
@@ -136,7 +140,8 @@ namespace Power
         public void SetVector4(string name, Vector4 data)
         {
             GL.UseProgram(Handle);
-            GL.Uniform4(_uniformLocations[name], data);
+            if (_uniformLocations.ContainsKey(name))
+                GL.Uniform4(_uniformLocations[name], data);
         }
     }
 }
