@@ -2,7 +2,7 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using System.Diagnostics;
-using System.Resources;
+using System.Text;
 
 namespace Power
 {
@@ -10,9 +10,10 @@ namespace Power
     {
         private readonly float[] _vertices =
         {
-            -0.5f, -0.5f, 0.0f, // Bottom-left vertex
-             0.5f, -0.5f, 0.0f, // Bottom-right vertex
-             0.0f,  0.5f, 0.0f  // Top vertex
+            // positions        // colors
+            0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+            -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+            0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
         };
 
         private int _vertexBufferObject;
@@ -21,11 +22,12 @@ namespace Power
 
         private Shader _shader;
 
-        private Stopwatch _timer;
+        private readonly Stopwatch _timer;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
+            _timer = new Stopwatch();
         }
 
         protected override void OnLoad()
@@ -42,16 +44,16 @@ namespace Power
             _vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArrayObject);
 
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
-            GL.GetInteger(GetPName.MaxVertexAttribs, out int maxAttributeCount);
-            Debug.WriteLine($"Maximum number of vertex attributes supported: {maxAttributeCount}");
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
+            GL.EnableVertexAttribArray(1);
 
-            _shader = new Shader(Properties.Resources.VertexShader, Properties.Resources.FragmentShader);
+            _shader = new Shader(
+                Encoding.Default.GetString(Properties.Resources.VertexShader),
+                Encoding.Default.GetString(Properties.Resources.FragmentShader));
             _shader.Use();
-
-            _timer = new Stopwatch();
             _timer.Start();
         }
 
